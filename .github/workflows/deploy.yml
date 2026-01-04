@@ -1,36 +1,35 @@
-name: Deploy React App
+name: Deploy with Docker
 
 on:
     push:
-        branches:
-            - main
+        branches: [main]
 
 jobs:
-    build-and-deploy:
+    deploy:
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-                  cache: 'npm'
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Build project
-              run: npm run build
-
-            - name: Deploy to VPS
-              uses: appleboy/scp-action@master
+            - name: Deploy to VPS via SSH
+              uses: appleboy/ssh-action@master
               with:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  source: 'dist/*'
-                  target: '/var/www/my-portfolio'
-                  strip_components: 1
+                  script: |
+                      # 1. On se déplace dans le dossier que vous venez de trouver
+                      cd /root/jacob/neon-portfolio-core
+
+                      # 2. On met à jour le code depuis GitHub
+                      git pull origin main 
+
+                      # 3. On reconstruit l'image Docker avec les changements
+                      docker build -t react-app .
+
+                      # 4. On nettoie l'ancien container s'il existe
+                      docker stop react-app || true
+                      docker rm react-app || true
+
+                      # 5. On lance le nouveau container sur le port 8080
+                      docker run -d --name react-app -p 8080:8080 react-app
