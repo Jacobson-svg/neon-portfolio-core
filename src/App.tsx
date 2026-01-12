@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
+// sqp_15b6532a900a4123f924944ad0b5832c5f526477
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
