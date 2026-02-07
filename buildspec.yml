@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 991727098563.dkr.ecr.eu-north-1.amazonaws.com/jacob-portfolio
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t portfolio-jacob .
+      - echo Tagging the Docker image...
+      - docker tag portfolio-jacob:latest 991727098563.dkr.ecr.eu-north-1.amazonaws.com/jacob-portfolio:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push 991727098563.dkr.ecr.eu-north-1.amazonaws.com/jacob-portfolio:latest
+      - echo Creating imagedefinitions.json file for ECS deployment...
+      - echo '[{"name":"portfolio-jacob-container","imageUri":"991727098563.dkr.ecr.eu-north-1.amazonaws.com/jacob-portfolio/jacob-portfolio:latest"}]' > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
