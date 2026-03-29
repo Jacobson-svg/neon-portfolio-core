@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { skills } from "@/data/mockData";
 
+// Garder les couleurs pour les lueurs (glow) de fond
 const categoryColors: Record<string, string> = {
   Frontend: "from-blue-500 to-cyan-500",
   Backend: "from-green-500 to-emerald-500",
@@ -14,76 +14,84 @@ const categoryColors: Record<string, string> = {
 };
 
 export function Skills() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  // Configuration propre de Framer Motion
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const elements = sectionRef.current?.querySelectorAll(".animate-on-scroll");
-    elements?.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+  };
 
   return (
-    <section
-      id="skills"
-      ref={sectionRef}
-      className="py-20 md:py-32 px-4 sm:px-6 lg:px-8"
-    >
-      <div className="container mx-auto">
+    <section id="skills" className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="container mx-auto max-w-6xl">
+        
+        {/* Titre de la section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16 animate-on-scroll"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Technical <span className="gradient-text">Skills</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+            Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Skills</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
+          <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full opacity-80" />
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
-          {skills.map((skill, index) => {
+        {/* Grille Fluide (sans segmentation stricte) */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
+        >
+          {skills.map((skill) => {
             const gradientClass = categoryColors[skill.category] || categoryColors.Tools;
+            
+            // Pour Express qui est souvent noir par défaut, on peut forcer un filtre ou un fond blanc si besoin
+            const isDarkLogo = skill.name === "Express";
+
             return (
               <motion.div
                 key={skill.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="animate-on-scroll group"
+                variants={itemVariants}
+                className="group relative flex flex-col items-center justify-center p-6 bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-white/5"
               >
-                <div className="glass rounded-xl p-4 md:p-6 text-center hover:scale-105 transition-all duration-300 relative overflow-hidden">
-                  {/* Gradient Background on Hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-0 group-hover:opacity-10 dark:group-hover:opacity-20 transition-opacity duration-300`} />
-                  
-                  <div className="relative z-10">
-                    <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br ${gradientClass} opacity-10 dark:opacity-20 mx-auto mb-3 flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <span className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-primary to-accent dark:from-accent dark:to-primary bg-clip-text text-transparent">
-                        {skill.name.charAt(0)}
-                      </span>
-                    </div>
-                    <h3 className="font-semibold text-sm md:text-base mb-1">{skill.name}</h3>
-                    <p className="text-xs text-muted-foreground">{skill.category}</p>
-                  </div>
+                {/* Lueur d'arrière-plan au survol (Glow effect) */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-0 group-hover:opacity-[0.08] dark:group-hover:opacity-15 rounded-2xl transition-opacity duration-300 pointer-events-none`} />
+                
+                {/* Conteneur de l'icône */}
+                <div className="relative w-14 h-14 md:w-16 md:h-16 mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <img 
+                    src={skill.icon} 
+                    alt={`${skill.name} logo`} 
+                    className={`max-w-full max-h-full object-contain drop-shadow-sm ${isDarkLogo ? 'dark:invert' : ''}`}
+                    loading="lazy"
+                  />
                 </div>
+                
+                {/* Texte */}
+                <h3 className="font-medium text-sm md:text-base text-foreground/90 group-hover:text-foreground transition-colors text-center">
+                  {skill.name}
+                </h3>
+                
+                {/* Petit tag de catégorie subtil au lieu de grosses boîtes */}
+                <span className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground/70 group-hover:text-muted-foreground transition-colors">
+                  {skill.category}
+                </span>
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

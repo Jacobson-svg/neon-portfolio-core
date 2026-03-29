@@ -1,113 +1,79 @@
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Code2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { projects } from "@/data/mockData";
 
 export function Projects() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const elements = sectionRef.current?.querySelectorAll(".animate-on-scroll");
-    elements?.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section
-      id="projects"
-      ref={sectionRef}
-      className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 relative"
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent dark:via-primary/5" />
+    <section id="projects" className="py-24 md:py-32 px-4 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent -z-10" />
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16 animate-on-scroll"
+          className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Featured <span className="gradient-text">Projects</span>
+          <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">
+            SELECTED <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">WORKS</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
+          <p className="text-muted-foreground max-w-xl mx-auto text-lg">
+            Une immersion dans mes dernières réalisations techniques et créatives.
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.7, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="animate-on-scroll group"
+              className="group relative"
             >
-              <div className="glass rounded-2xl overflow-hidden hover:scale-[1.02] transition-all duration-300 glow-subtle">
-                {/* Project Image */}
-                <div className="relative overflow-hidden aspect-video">
+              {/* Card Container */}
+              <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50 backdrop-blur-sm transition-all duration-500 hover:border-primary/30">
+                
+                {/* Image Section */}
+                <div className="relative aspect-[16/10] overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        asChild
-                        className="bg-primary/90 hover:bg-primary text-primary-foreground dark:bg-accent/90 dark:hover:bg-accent"
-                      >
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Live Demo
-                        </a>
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+                    <Button size="icon" variant="secondary" className="rounded-full hover:scale-110 transition-transform" asChild>
+                      <a href={project.demo} target="_blank"><ExternalLink className="h-5 w-5" /></a>
+                    </Button>
+                    {project.github && (
+                      <Button size="icon" variant="secondary" className="rounded-full hover:scale-110 transition-transform" asChild>
+                        <a href={project.github} target="_blank"><Github className="h-5 w-5" /></a>
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        asChild
-                        className="border-primary/30 dark:border-accent/30"
-                      >
-                        <a href={project.github} target="_blank" rel="noopener noreferrer">
-                          <Github className="h-4 w-4 mr-2" />
-                          Code
-                        </a>
-                      </Button>
-                    </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Project Info */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-3 group-hover:gradient-text transition-all">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4 line-clamp-3">
+                {/* Content Section */}
+                <div className="p-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-2xl font-bold tracking-tight group-hover:text-primary transition-colors">
+                      {project.title}
+                    </h3>
+                    <Code2 className="text-muted-foreground/30 h-6 w-6" />
+                  </div>
+                  
+                  <p className="text-muted-foreground mb-6 leading-relaxed line-clamp-2">
                     {project.description}
                   </p>
 
-                  {/* Tech Stack */}
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary dark:bg-accent/10 dark:text-accent border border-primary/20 dark:border-accent/20"
+                        className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-md bg-primary/5 text-primary border border-primary/10"
                       >
                         {tech}
                       </span>
