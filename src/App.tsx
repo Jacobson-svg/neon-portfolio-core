@@ -1,30 +1,13 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/hooks/useTheme";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
-// sqp_15b6532a900a4123f924944ad0b5832c5f526477
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { LanguageProvider } from '@/i18n/LanguageProvider';
+import { ScrollToTop } from '@/components/portfolio/ScrollToTop';
+import Home from '@/pages/Home';
+import ProjectDetail from '@/pages/ProjectDetail';
+import NotFound from '@/pages/NotFound';
+export default function App() {
+ return <LanguageProvider><BrowserRouter><ScrollToTop/><Routes>
+  <Route path="/" element={<Home/>}/>
+  <Route path="/projects/:slug" element={<ProjectDetail/>}/>
+  <Route path="*" element={<NotFound/>}/>
+ </Routes></BrowserRouter></LanguageProvider>;
+}

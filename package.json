@@ -1,14 +1,15 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "jbf-portfolio-aparte",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -88,5 +89,6 @@
     "tabWidth": 4,
     "trailingComma": "es5",
     "arrowParens": "avoid"
-  }
+  },
+  "description": "Bilingual editorial portfolio of Jacob Brayan Fotso"
 }

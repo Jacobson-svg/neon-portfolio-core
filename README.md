@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# JBF — Portfolio Aparté (React / TypeScript)
 
-## Project info
+Portfolio de **Jacob Brayan Fotso**, développé à partir du projet `Portfolio.zip` et de la direction visuelle **Aparté V3**. Il privilégie une typographie éditoriale, des espaces généreux, des transitions légères et de vrais visuels de projets.
 
-**URL**: https://lovable.dev/projects/e6baf247-8222-48f7-8e6e-b9080b93b2d2
+## Démarrage
 
-## How can I edit this code?
+Prérequis : **Node.js 20 ou supérieur** et npm.
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/e6baf247-8222-48f7-8e6e-b9080b93b2d2) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm ci
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Le serveur Vite utilise le port **8080** par défaut. Ouvrir l'URL indiquée dans le terminal, généralement `http://localhost:8080/`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Pour un build de production :
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Déploiement : le `Dockerfile` multi-stage et la configuration `nginx.conf` sont fournis. Le serveur Nginx gère la réécriture SPA vers `index.html` pour les pages `/projects/:slug`.
 
-## What technologies are used for this project?
+## Fonctionnalités incluses
 
-This project is built with:
+- Accueil éditorial responsive (desktop, tablette, mobile).
+- **Kazou**, projet phare : description fidèle du module livraison **NestJS**, au sein d'un écosystème composé de plusieurs backends et mécanismes de communication.
+- **WhatAsso**, prototype de commerce conversationnel et de logistique : aperçu de conversation **HTML/CSS** réactif à la langue EN/FR, et 3 parcours interactifs (client, commerçant, livreur) dans l'étude de cas. **Aucun paiement connecté**, aucune intégration WhatsApp en direct.
+- Aje7, CAA ISO Manager et autres expériences/projets.
+- Pages de projets `/projects/kazou`, `/projects/whatasso`, `/projects/aje7`, `/projects/caa-iso-manager`, `/projects/assoh`, `/projects/flex-engineering`, `/projects/listeo`.
+- Section compétences organisée à partir des CV : frontend/mobile, backend/APIs, données, DevOps, qualité/observabilité, cloud.
+- Bilingue EN/FR : détection de la langue navigateur à la première ouverture, choix conservé en `localStorage`, éléments de navigation, descriptions, méta-description, scénarios WhatAsso traduits.
+- Animation `framer-motion` sur les révélations au scroll. Respect de `prefers-reduced-motion`.
+- Navigation mobile, progression de lecture, liens sociaux, email, titre de page localisé, routes d'erreur.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Organisation du code
 
-## How can I deploy this project?
+```text
+src/
+  assets/                   # Photos et captures provenant du portfolio d'origine
+  components/portfolio/     # Reveal, WhatsAppPreview, ScrollToTop
+  content/                  # projects.ts, skills.ts
+  i18n/                     # Dictionnaires EN/FR, LanguageProvider
+  layout/                   # Header, Footer
+  pages/                    # Home, ProjectDetail, NotFound
+  styles/portfolio.css      # Design system et responsive
+  App.tsx                   # Router
+  main.tsx                  # Entrée React
+```
 
-Simply open [Lovable](https://lovable.dev/projects/e6baf247-8222-48f7-8e6e-b9080b93b2d2) and click on Share -> Publish.
+### Ajouter / modifier un projet
 
-## Can I connect a custom domain to my Lovable project?
+Modifier `src/content/projects.ts` : contenu éditorial bilingue, capture réelle, technologies réellement utilisées et lien éventuel. La homepage utilise les 4 premiers projets comme projets principaux ; les suivants apparaissent dans la liste « More selected work ». Toutes les pages d'études de cas sont rendues à partir des mêmes données.
 
-Yes, you can!
+### Modifier les textes d'interface
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Modifier `src/i18n/translations.ts`. Pour changer les conversations WhatsApp (illustratives), modifier `src/components/portfolio/WhatsAppPreview.tsx`. La conversation est rendue en HTML : il ne faut **pas** produire deux images localisées.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Modifier le style
+
+La direction **Aparté** est dans `src/styles/portfolio.css`. Palette : papier `#efede7`, charbon `#1b1d1b`, accent terre cuite `#ad644d`. Typographies Google Fonts : Manrope, Playfair Display (italique), DM Sans, IBM Plex Mono.
+
+## À compléter avant publication
+
+1. **CV** : un PDF source n'était pas présent dans le ZIP. Ajoutez un document validé dans `public/` puis créez un lien « Download CV / Télécharger le CV » depuis le Header ou la section contact. Ne publiez pas une copie non vérifiée.
+2. **Listeo** : contribution exacte, description et visuels à confirmer. La page actuelle indique clairement ces limites.
+3. **Assoh / WhatAsso** : leur relation éventuelle n'est **pas présumée** ; les éléments sont présentés séparément.
+4. **Kazou** : topologie interne et mécanismes précis non dévoilés. Le schéma est conceptuel, pas une documentation d'architecture authentifiée.
+5. **WhatAsso** : les messages sont des exemples UX, non des captures de conversations clients ; pas de paiement en ligne.
+6. Confirmer les liens de démonstration externes avant déploiement : ces URLs proviennent du portfolio d'origine.
+7. Remplacer les méta Open Graph génériques par des URL absolues et une image de partage après l'achat du domaine.
+
+## Notes de validation
+
+La syntaxe de tous les fichiers TS/TSX a été contrôlée avec le parseur TypeScript disponible localement. **Le build npm/Vite n'a pas pu être exécuté dans l'environnement de création : l'accès DNS au registre npm est bloqué.** Sur votre ordinateur, exécutez `npm ci && npm run build` puis `npm run dev`. Les dépendances sont définies dans le `package-lock.json` d'origine.
