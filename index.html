@@ -1,1 +1,44 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="theme-color" content="#efede7"/><meta name="description" content="Portfolio of Jacob Brayan Fotso, full-stack software engineer. Kazou, WhatAsso, Aje7, ISO Manager and backend engineering."/><meta property="og:type" content="website"/><meta property="og:title" content="Jacob Brayan Fotso — Full-Stack Software Engineer"/><meta property="og:description" content="Digital products, built with intention. Selected work in mobile, web and backend engineering."/><link rel="icon" href="/favicon.jpg" type="image/jpeg"/><title>Jacob Brayan Fotso — Full-Stack Software Engineer</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#efede7" />
+        <meta name="google-site-verification" content="Cfs63gmDqo-Hwu_8_N_7IYBGB-2KnrYcytA-8w8GN6c" />
+        <script>
+            try {
+                var theme = localStorage.getItem('jbf-theme')
+                if (theme !== 'light' && theme !== 'dark')
+                    theme = matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'dark'
+                        : 'light'
+                document.documentElement.classList.toggle(
+                    'dark',
+                    theme === 'dark'
+                )
+                document.documentElement.style.colorScheme = theme
+                document.querySelector('meta[name="theme-color"]').content =
+                    theme === 'dark' ? '#171d1b' : '#efede7'
+            } catch (e) {}
+        </script>
+        <meta
+            name="description"
+            content="Portfolio of Jacob Brayan Fotso, full-stack software engineer. Kazou, WhatAsso, Aje7, ISO Manager and backend engineering."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:title"
+            content="Jacob Brayan Fotso — Full-Stack Software Engineer"
+        />
+        <meta
+            property="og:description"
+            content="Digital products, built with intention. Selected work in mobile, web and backend engineering."
+        />
+        <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+        <title>Jacob Brayan Fotso — Full-Stack Software Engineer</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
+</html>

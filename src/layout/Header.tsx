@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '@/i18n/LanguageProvider'
-import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { useTheme } from '@/hooks/useTheme'
+import { ArrowUpRight, Menu, Moon, Sun, X } from 'lucide-react'
 const items = [
     'work',
     'approach',
@@ -12,6 +13,7 @@ const items = [
 ] as const
 export function Header() {
     const { language, setLanguage, t } = useLanguage()
+    const { theme, toggleTheme } = useTheme()
     const [menuOpen, setMenuOpen] = useState(false)
     const [progress, setProgress] = useState(0)
     const location = useLocation()
@@ -60,6 +62,19 @@ export function Header() {
                         ))}
                     </nav>
                     <div className="header-right">
+                        <button
+                            className="theme-toggle"
+                            type="button"
+                            onClick={toggleTheme}
+                            aria-label={language === 'fr'
+                                ? `Activer le thème ${theme === 'dark' ? 'clair' : 'sombre'}`
+                                : `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+                            title={language === 'fr'
+                                ? `Thème ${theme === 'dark' ? 'clair' : 'sombre'}`
+                                : `${theme === 'dark' ? 'Light' : 'Dark'} theme`}
+                        >
+                            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                        </button>
                         <div
                             className="language-switch"
                             role="group"
