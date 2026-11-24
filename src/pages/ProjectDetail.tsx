@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
-import { projectById, projects } from '@/content/projects'
+import { nextProject, projectById } from '@/content/projects'
+import { projectPath } from '@/content/site'
 import { useLanguage } from '@/i18n/LanguageProvider'
 import { Header } from '@/layout/Header'
 import { Footer } from '@/layout/Footer'
@@ -67,8 +68,7 @@ export default function ProjectDetail() {
                 <Footer />
             </>
         )
-    const index = projects.findIndex(x => x.id === p.id),
-        next = projects[(index + 1) % projects.length]
+    const next = nextProject(p.id)
     return (
         <>
             <Header />
@@ -216,7 +216,7 @@ export default function ProjectDetail() {
                     )}
                     <div className="case-next">
                         <span className="eyebrow">{t.detail.next}</span>
-                        <Link to={`/projects/${next.id}`}>
+                        <Link to={projectPath(next.id)}>
                             {next.name}
                             <ArrowRight size={35} />
                         </Link>

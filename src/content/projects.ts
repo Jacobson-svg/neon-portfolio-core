@@ -280,3 +280,20 @@ export const projects: Project[] = [
     },
 ]
 export const projectById = (id?: string) => projects.find(p => p.id === id)
+
+// Preserve the current case-study sequence while referring to projects by ID.
+export const nextProjectId: Record<ProjectId, ProjectId> = {
+    kazou: 'whatasso',
+    whatasso: 'aje7',
+    aje7: 'caa-iso-manager',
+    'caa-iso-manager': 'assoh',
+    assoh: 'flex-engineering',
+    'flex-engineering': 'listeo',
+    listeo: 'kazou',
+}
+
+export const nextProject = (id: ProjectId): Project => {
+    const project = projectById(nextProjectId[id])
+    if (!project) throw new Error(`Missing project ${nextProjectId[id]}`)
+    return project
+}
